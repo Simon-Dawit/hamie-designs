@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HAMIE DESIGNS | Access Portal</title>
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: "Poppins", sans-serif; }
+    body { background: radial-gradient(circle at top left, #1c0a0d, #0c0507); color: #fff; min-height: 100vh; display: flex; flex-direction: column; align-items: center; }
+    
+    nav { width: 100%; background: rgba(30, 12, 15, 0.95); padding: 15px 40px; display: flex; justify-content: space-between; align-items: center; border-b: 1px solid rgba(139, 38, 53, 0.2); backdrop-filter: blur(10px); }
+    .nav-brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: #e6dfd3; font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 600; letter-spacing: 2px; }
+    .nav-brand img { width: 45px; height: 45px; border-radius: 50%; border: 1px solid #8b2635; }
+    .nav-links { display: flex; gap: 30px; }
+    .nav-links a { color: #c9c2b5; text-decoration: none; font-weight: 500; font-size: 0.95rem; }
+    .nav-links a.active { color: #8b2635; }
+
+    .brand-title { font-family: 'Playfair Display', serif; color: #e6dfd3; font-size: 2.5rem; margin: 40px 0 20px; letter-spacing: 2px; }
+    .container { display: flex; width: 850px; height: 480px; border-radius: 20px; overflow: hidden; box-shadow: 0 15px 40px rgba(0,0,0,0.5); background: #14080a; border: 1px solid rgba(139, 38, 53, 0.2); }
+    .left, .right { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 40px; }
+    .left { background-color: #1a0b0e; }
+    .right { background: linear-gradient(135deg, #8b2635, #4a121a); color: #e6dfd3; }
+    
+    h2 { font-family: 'Playfair Display', serif; margin-bottom: 15px; color: #e6dfd3; }
+    .input { width: 100%; position: relative; margin-bottom: 20px; }
+    .input input { width: 100%; padding: 14px 40px 14px 16px; border-radius: 10px; border: 1px solid rgba(139, 38, 53, 0.3); background: #0c0507; color: #fff; outline: none; font-size: 14px; transition: 0.3s; }
+    .input input:focus { border-color: #8b2635; box-shadow: 0 0 10px rgba(139, 38, 53, 0.3); }
+    .input i { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); color: #7a7267; font-size: 18px; }
+    
+    .btn { width: 100%; padding: 14px; border: none; border-radius: 10px; background-color: #8b2635; color: #fff; font-size: 15px; font-weight: 600; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 15px rgba(139, 38, 53, 0.3); }
+    .btn:hover { background-color: #a63244; transform: translateY(-1px); }
+    .right p { margin-bottom: 25px; text-align: center; max-width: 260px; line-height: 1.5; font-weight: 300; color: #c9c2b5; }
+    .btn-outline { background: transparent; border: 2px solid #e6dfd3; color: #e6dfd3; padding: 10px 25px; border-radius: 10px; cursor: pointer; transition: 0.3s; font-weight: 600; }
+    .btn-outline:hover { background: #e6dfd3; color: #8b2635; }
+    #errorMsg { color: #a63244; font-size: 0.85rem; margin-bottom: 10px; display: none; text-shadow: 0 0 5px rgba(0,0,0,0.5); }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-brand">
+      <img src="logo.png" alt="Hamie Designs Logo">
+      HAMIE DESIGNS
+    </a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="gallery.html">Gallery</a>
+      <a href="order.html">Order</a>
+      <a href="login.html" class="active">Login</a>
+    </div>
+  </nav>
+
+  <div class="brand-title">HAMIE DESIGNS</div>
+
+  <div class="container">
+    <div class="left">
+      <h2>Sign In</h2>
+      <p style="font-size:13px; color:#7a7267; margin-bottom:20px;">Provide design platform user credentials</p>
+      
+      <div id="errorMsg">Invalid Email or Password parameter setup.</div>
+
+      <form id="loginForm" style="width: 100%;">
+        <div class="input">
+          <input type="email" id="email" placeholder="Email Address" required>
+          <i class="bx bxs-envelope"></i>
+        </div>
+        <div class="input">
+          <input type="password" id="password" placeholder="Password" required>
+          <i class="bx bxs-lock-alt"></i>
+        </div>
+        <button type="submit" class="btn">Authenticate Entry</button>
+      </form>
+    </div>
+
+    <div class="right">
+      <h2>Bespoke Suite</h2>
+      <p>Register an account configuration framework to view upcoming custom line cuts and live tailoring pipelines.</p>
+      <button class="btn-outline" onclick="alert('Account initialization engine running local dummy modules.')">Sign Up</button>
+    </div>
+  </div>
+
+  <script>
+    // Intercept client actions and track login state via WebStorage
+    document.getElementById("loginForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const email = document.getElementById("email").value;
+      const pass = document.getElementById("password").value;
+
+      // Acceptance validation rule pattern
+      if (email && pass) {
+        localStorage.setItem("hamie_authenticated", "true");
+        // Route path to protected interface
+        window.location.href = "gallery.html";
+      } else {
+        document.getElementById("errorMsg").style.display = "block";
+      }
+    });
+  </script>
+</body>
+</html>

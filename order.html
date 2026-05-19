@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hamie Designs | Order & Configuration</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <script>
+    if (localStorage.getItem("hamie_authenticated") !== "true") {
+      alert("🔒 Restricted Entry: Authenticate profile configurations via the Login panel first.");
+      window.location.href = "login.html";
+    }
+  </script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: "Poppins", sans-serif; }
+    body { background: radial-gradient(circle at top left, #1c0a0d, #0c0507); color: #fff; min-height: 100vh; display: flex; flex-direction: column; justify-content: space-between; }
+    
+    nav { width: 100%; background: rgba(30, 12, 15, 0.95); padding: 15px 40px; display: flex; justify-content: space-between; align-items: center; border-b: 1px solid rgba(139, 38, 53, 0.2); backdrop-filter: blur(10px); }
+    .nav-brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: #e6dfd3; font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 600; letter-spacing: 2px; }
+    .nav-brand img { width: 45px; height: 45px; border-radius: 50%; border: 1px solid #8b2635; }
+    .nav-links { display: flex; gap: 30px; }
+    .nav-links a { color: #c9c2b5; text-decoration: none; font-weight: 500; font-size: 0.95rem; }
+    .nav-links a.active { color: #8b2635; }
+
+    main { padding: 40px 60px; max-width: 1100px; margin: 0 auto; width: 100%; }
+    h2 { font-family: 'Playfair Display', serif; color: #e6dfd3; margin-bottom: 25px; text-align: center; font-size: 2.2rem; }
+    .cart { background: rgba(30, 12, 15, 0.7); border: 1px solid rgba(139, 38, 53, 0.15); border-radius: 15px; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
+    
+    table { width: 100%; border-collapse: collapse; margin-bottom: 25px; }
+    th, td { text-align: left; padding: 14px; border-bottom: 1px solid rgba(139, 38, 53, 0.15); }
+    th { color: #e6dfd3; font-size: 1.1rem; font-family: 'Playfair Display', serif; }
+    td { color: #c9c2b5; }
+    
+    .total { text-align: right; color: #c49a45; font-size: 1.4rem; font-weight: 600; margin-top: 15px; letter-spacing: 1px; }
+    .controls { margin-top: 30px; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; align-items: center; }
+    
+    select, input { background: #0c0507; color: #fff; border: 1px solid rgba(139, 38, 53, 0.3); border-radius: 10px; padding: 12px; width: 100%; outline: none; transition: 0.3s; }
+    select:focus, input:focus { border-color: #8b2635; }
+    
+    button { background: #8b2635; color: #fff; border: none; border-radius: 20px; padding: 12px 25px; cursor: pointer; font-weight: 600; transition: 0.3s; }
+    button:hover { background: #a63244; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(139, 38, 53, 0.4); }
+    .clear-btn { background: transparent; border: 1px solid rgba(139, 38, 53, 0.5); color: #c9c2b5; }
+    .clear-btn:hover { background: rgba(139, 38, 53, 0.1); color: #fff; }
+
+    footer { text-align: center; padding: 25px; background: #0c0507; color: #7a7267; font-size: 0.9rem; border-t: 1px solid rgba(139, 38, 53, 0.1); }
+    footer span { color: #e6dfd3; }
+    .location { display: none; margin-top: 20px; padding: 15px; background: rgba(139,38,53,0.05); border: 1px dashed rgba(139,38,53,0.3); border-radius: 10px; text-align: center; }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-brand">
+      <img src="logo.png" alt="Hamie Designs Logo">
+      HAMIE DESIGNS
+    </a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="gallery.html">Gallery</a>
+      <a href="order.html" class="active">Order</a>
+    </div>
+  </nav>
+
+  <main>
+    <h2>Design Pipeline Requirements</h2>
+    <div class="cart">
+      <table id="cartTable">
+        <thead>
+          <tr>
+            <th>Specification Detail</th>
+            <th>Base Variable Price</th>
+          </tr>
+        </thead>
+        <tbody id="cartItems"></tbody>
+      </table>
+      <div class="total" id="totalPrice">Total: $0</div>
+
+      <div class="controls">
+        <button class="clear-btn" onclick="clearCart()">Flush Cart Layout</button>
+        <select id="deliveryOption" onchange="toggleLocation()">
+          <option value="">Fulfillment Parameters</option>
+          <option value="pickup">Bespoke Workshop Pick up</option>
+          <option value="deliver">On-site Delivery Routing</option>
+        </select>
+        <input type="email" id="email" placeholder="Verification Email" />
+        <input type="text" id="whatsapp" placeholder="WhatsApp Global Channel Link" />
+        <button onclick="submitOrder()">Dispatch To Workshop</button>
+      </div>
+
+      <div class="location" id="locationDiv">
+        <button onclick="getLocation()">📍 Sync Geolocation Coordinates</button>
+        <p id="locationOutput" style="margin-top:10px; font-size:0.9rem; color:#c9c2b5;"></p>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    © 2026 <span>Hamie Designs</span>. All rights reserved.
+  </footer>
+
+  <script>
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+    function loadCart() {
+      const cartItems = document.getElementById("cartItems");
+      const totalPrice = document.getElementById("totalPrice");
+      cartItems.innerHTML = "";
+
+      let total = 0;
+      cart.forEach(item => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `<td>${item.name}</td><td>$${item.price}</td>`;
+        cartItems.appendChild(tr);
+        total += item.price;
+      });
+      totalPrice.textContent = `Total Aggregate: $${total}`;
+    }
+
+    function clearCart() {
+      localStorage.removeItem("cart");
+      cart = [];
+      loadCart();
+    }
+
+    function toggleLocation() {
+      const deliveryOption = document.getElementById("deliveryOption").value;
+      document.getElementById("locationDiv").style.display = (deliveryOption === "deliver") ? "block" : "none";
+    }
+
+    function getLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (pos) => {
+            const lat = pos.coords.latitude;
+            const lon = pos.coords.longitude;
+            const mapLink = `https://maps.google.com/?q=${lat},${lon}`;
+            document.getElementById("locationOutput").innerHTML =
+              `Coordinates Locked: <a href="${mapLink}" target="_blank" style="color:#c49a45;">Open Matrix Array ↗</a>`;
+          },
+          () => alert("Coordinate tracking request denied.")
+        );
+      }
+    }
+
+    function submitOrder() {
+      const email = document.getElementById("email").value;
+      const whatsapp = document.getElementById("whatsapp").value;
+      const delivery = document.getElementById("deliveryOption").value;
+
+      if (cart.length === 0) return alert("System state error: Clean matrix cache.");
+      if (!email || !whatsapp || !delivery) return alert("Validation parameter parameters incomplete.");
+
+      alert("Design payload securely uploaded to workshop queue.");
+      clearCart();
+    }
+    loadCart();
+  </script>
+</body>
+</html>
